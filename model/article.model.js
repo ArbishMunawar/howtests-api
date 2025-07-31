@@ -28,12 +28,7 @@ const articleSchema = new mongoose.Schema(
         required: true,
       },
     ],
-    adds: [
-      {
-        type: String,
-        required: true,
-      },
-    ],
+
     views: {
       type: Number,
       default: 0,
@@ -45,18 +40,7 @@ const articleSchema = new mongoose.Schema(
     reviews: {
       type: String,
     },
-    comments: [
-      {
-        name: String,
-        contactNo: String,
-        email: String,
-        message: String,
-        createdAt: {
-          type: Date,
-          default: Date.now,
-        },
-      },
-    ],
+  
   },
   { timestamps: true }
 );

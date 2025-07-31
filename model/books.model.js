@@ -15,18 +15,6 @@ const booksSchema = new mongoose.Schema(
         required: true,
       },
     ],
-    category: [
-      {
-        type: String,
-        required: true,
-      },
-    ],
-    adds: [
-      {
-        type: String,
-        required: true,
-      },
-    ],
     views: {
       type: Number,
       default: 0,
@@ -42,6 +30,18 @@ const booksSchema = new mongoose.Schema(
     summary: String,
     content: String,
     reviews: String,
+    keyfeatures: {
+      type: [{ String }],
+      default: [],
+    },
+    whychsoose: {
+      type: [{ String }],
+      default: [],
+    },
+    subjectcovering: {
+      type: [{ String }],
+      default: [],
+    },
   },
 
   { timestamps: true }

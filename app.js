@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require('cors');
 const cookieParser = require('cookie-parser')
-const userRoute = require("./routes/index");
+const {userRouter,bookRouter,authorRouter,articleRouter} = require("./routes/route");
 const app = express();
 require("dotenv").config();
 const PORT = 8000;
@@ -21,15 +21,10 @@ app.use(cookieParser())
 app.use(express.urlencoded({extended:false}))
 
 //Routes
-app.use("/user", userRoute);
-app.use("/books", require("./routes/book"));
-app.use("/articles", require("./routes/article"));
-app.use("/authors", require("./routes/author"));
-
-
-//setting the engine
-// app.set("view engine","ejs")
-// app.set("views",path.resolve("./views"))
+app.use("/api/v1/user", userRouter);
+app.use("/api/v1/books", bookRouter);
+app.use("/api/v1/articles",articleRouter);
+app.use("/api/v1/authors",authorRouter);
 
 
 app.get("/", async (req, res) => {

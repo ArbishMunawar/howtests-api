@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const userModel = require("../model/userModel");
+const userModel = require("../model/user.model");
 const bcrypt = require("bcryptjs");
 const router = Router();
 
@@ -47,8 +47,7 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-
-//login 
+//login
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -60,33 +59,32 @@ router.post("/login", async (req, res) => {
         msg: "User not found",
       });
     }
-    
+
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.json({
         success: false,
         msg: "Invalid password",
       });
-    }       
+    }
 
-    return res.json({   
-        success: true,
-        msg: "Login successful",
-        user: {
-            username: user.username,
-            name: user.name,
-            email: user.email,
-            isAdmin: user.isAdmin,
-        },
-        });
-    } catch (error) {
+    return res.json({
+      success: true,
+      msg: "Login successful",
+      user: {
+        username: user.username,
+        name: user.name,
+        email: user.email,
+        isAdmin: user.isAdmin,
+      },
+    });
+  } catch (error) {
     console.error("Login Error:", error);
     return res.status(500).json({
       success: false,
       msg: "Internal server error",
     });
-    }
-    })
-
+  }
+});
 
 module.exports = router;

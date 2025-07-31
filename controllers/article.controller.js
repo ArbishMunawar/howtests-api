@@ -1,4 +1,4 @@
-const Article = require("../model/articles");
+const Article = require("../model/article.model.js");
 
 exports.createArticle = async (req, res) => {
     const { id } = req.params;
