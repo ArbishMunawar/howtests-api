@@ -3,7 +3,7 @@ const { Schema, model } = mongoose;
 
 
 const userSchema=new Schema({
-  userName:{
+  username:{
     type:String,
     required:true
   },
@@ -21,11 +21,16 @@ const userSchema=new Schema({
     type:String,
     required:true,
   },
-
-  isAdmin:{
-    type:Boolean,
-    default:false,
+   role:{
+    type:String,
+    enum:["USER","ADMIN"],
+    default:"USER",
   },
+ 
+  // isAdmin:{
+  //   type:Boolean,
+  //   default:false,
+  // },
  date:{
     type:Date,
     default:Date.now,

@@ -12,12 +12,12 @@ exports.createArticle = async (req, res) => {
 
 exports.getAllArticles=async(req,res)=>{
      const authorId = req.query.author;
-  const article= await Article.find({ author: authorId }).populate("author");
+  const article= await Article.find().populate("author").exec();
     res.status(200).json(article);
 }
 
 
 exports.getArticleById=async(req,res)=>{
-    const article= await Article.findById(req.params.id).populate("author");
+    const article= await Article.findById(req.params.id).populate("author").exec();
     res.status(200).json(article);
 }

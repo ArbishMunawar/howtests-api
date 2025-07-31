@@ -1,50 +1,3 @@
-// const {Router}=require("express")
-// const userModel=require("../model/userModel");
-// const { name } = require("ejs");
-// const bcrypt = require("bcrypt");
-// const router=Router();
-
-// //get homepage
-// router.get("/",(req,res,next)=>{
-//   res.render("index")
-// })
-
-
-// router.post("/signup", async(req,res)=>{
-//     const{userName,name, email, password}=req.body;
-//     let emailCon=await userModel.findOne({email:email}) 
-//     if(emailCon){
-//       return  res.json({
-//             success:false,
-//             msg:"Email already exists"
-//         })
-//     }else{
-//         bcrypt.genSalt(12, (err, salt) => {
-//   bcrypt.hash(password, salt,async function(err, hash) {
-//     if (err) {
-//       return res.status(500).json({ success: false, msg: "Error hashing password" });
-
-//       let user= await userModel.create({
-//         userName: userName,
-//         name:name,
-//         email: email,
-//         password: hash,
-//       });
-//       return res.json({
-//         success:true,
-//         msg:"User created successfully",        
-//       })
-//     }
-//   });
-// });
-
-//     }
-
-// return res.redirect("/")
-// })
-// module.exports=router;
-
-
 const { Router } = require("express");
 const userModel = require("../model/userModel");
 const bcrypt = require("bcryptjs");
@@ -57,7 +10,7 @@ router.get("/", (req, res) => {
 
 // Signup route
 router.post("/signup", async (req, res) => {
-  const { userName, name, email, password } = req.body;
+  const { username, name, email, password } = req.body;
 
   try {
     // Check if email already exists
@@ -75,7 +28,7 @@ router.post("/signup", async (req, res) => {
 
     // Create new user
     const user = await userModel.create({
-      userName,
+      username,
       name,
       email,
       password: hashedPassword,
@@ -120,7 +73,7 @@ router.post("/login", async (req, res) => {
         success: true,
         msg: "Login successful",
         user: {
-            userName: user.userName,
+            username: user.username,
             name: user.name,
             email: user.email,
             isAdmin: user.isAdmin,

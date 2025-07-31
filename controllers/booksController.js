@@ -11,9 +11,9 @@ exports.createBook = async (req, res) => {
 
 exports.getAllBooks=async(req,res)=>{
      const authorId = req.query.author;
-  const book= await Book.find({ author: authorId }).populate("author");
+     const book= await Book.find().populate("author");
     res.status(200).json(book);
-}
+}  
 
 
 exports.getBookById=async(req,res)=>{
