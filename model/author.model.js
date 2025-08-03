@@ -14,6 +14,12 @@ const authorSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+       index: true,
+    },
     profession: {
       type: String,
       required: true,
@@ -38,16 +44,15 @@ const authorSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    credentials: [
-      {
-        qualification: String,
-        degree: String,
-        university: String,
-        city: String,
-        province: String,
-        country: String,
-      },
-    ],
+    credentials: {
+      qualification: String,
+      degree: String,
+      university: String,
+      city: String,
+      province: String,
+      country: String,
+    },
+
     image: {
       type: String,
     },

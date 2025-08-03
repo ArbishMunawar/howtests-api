@@ -16,7 +16,12 @@ const userSchema = new Schema(
       required: true,
       unique: true,
     },
-
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+      index: true,
+    },
     password: {
       type: String,
       required: true,
@@ -29,10 +34,7 @@ const userSchema = new Schema(
     OTP: { type: String },
     OTPExpire: { type: Date },
 
-    date: {
-      type: Date,
-      default: Date.now,
-    },
+
   },
   { timestamps: true }
 );

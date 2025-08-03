@@ -7,6 +7,12 @@ const articleSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "author",
     },
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+       index: true,
+    },
     abstract: String,
     content: String,
     tableOfContents: [
@@ -24,7 +30,8 @@ const articleSchema = new mongoose.Schema(
     image: String,
     category: [
       {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "category",
         required: true,
       },
     ],
@@ -40,7 +47,6 @@ const articleSchema = new mongoose.Schema(
     reviews: {
       type: String,
     },
-  
   },
   { timestamps: true }
 );

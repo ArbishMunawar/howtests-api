@@ -2,10 +2,19 @@ const { Router } = require("express");
 const userModel = require("../model/user.model");
 const bcrypt = require("bcryptjs");
 const router = Router();
+const slugify = require("slugify");
+const { createTokenForUser } = require("../services/authentication.services");
 
-// Get homepage
-router.get("/", (req, res) => {
-  res.render("index");
+
+
+router.get("/all", async (req, res) => {
+  try {
+    const users = await userModel.find({}); 
+    res.json({ success: true, users });
+  } catch (error) {
+    console.error("Fetch Users Error:", error);
+    res.status(500).json({ success: false, msg: "Internal server error" });
+  }
 });
 
 // Signup route
@@ -26,12 +35,15 @@ router.post("/signup", async (req, res) => {
     const salt = await bcrypt.genSalt(12);
     const hashedPassword = await bcrypt.hash(password, salt);
 
+      const slug = slugify(name, { lower: true });
+
     // Create new user
     const user = await userModel.create({
       username,
       name,
       email,
       password: hashedPassword,
+      slug
     });
 
     return res.json({
@@ -68,15 +80,22 @@ router.post("/login", async (req, res) => {
       });
     }
 
+    const token = createTokenForUser(user);
+    // console.log("JWT Token:", token);
+
+    //  res.cookie("token", token,{ httpOnly: true,}) 
+
     return res.json({
       success: true,
       msg: "Login successful",
-      user: {
-        username: user.username,
-        name: user.name,
-        email: user.email,
-        isAdmin: user.isAdmin,
-      },
+      token,
+      user
+      // : {
+      //   username: user.username,
+      //   name: user.name,
+      //   email: user.email,
+      //   role: user.role,
+      // },
     });
   } catch (error) {
     console.error("Login Error:", error);

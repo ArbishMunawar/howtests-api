@@ -9,6 +9,12 @@ const booksSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "author",
     },
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+       index: true,
+    },
     tags: [
       {
         type: String,
@@ -29,17 +35,16 @@ const booksSchema = new mongoose.Schema(
     },
     summary: String,
     content: String,
-    reviews: String,
     keyfeatures: {
-      type: [{ String }],
+      type: { String },
       default: [],
     },
-    whychsoose: {
-      type: [{ String }],
+    whychsooseus: {
+      type: { String },
       default: [],
     },
     subjectcovering: {
-      type: [{ String }],
+      type: { String },
       default: [],
     },
   },

@@ -10,6 +10,12 @@ const commentSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "articles",
     },
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+      index: true,
+    },
     contactNo: {
       type: String,
       required: true,
@@ -18,7 +24,7 @@ const commentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-     content: {
+    content: {
       type: String,
       required: true,
     },

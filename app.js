@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require('cors');
 const cookieParser = require('cookie-parser')
+const { checkForAuthenticationCookie } = require("./middleware/authetication.middleware");
 const {userRouter,bookRouter,authorRouter,articleRouter} = require("./routes/route");
 const app = express();
 require("dotenv").config();
@@ -15,10 +16,14 @@ mongoose.connect(process.env.MONGO_URL)
 
 
 //middlewares
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173", 
+  credentials: true, 
+}));
 app.use(express.json());
 app.use(cookieParser())
-app.use(express.urlencoded({extended:false}))
+app.use(express.urlencoded({extended:true}))
+// app.use(checkForAuthenticationCookie({ cookieName: "token" }));
 
 //Routes
 app.use("/api/v1/user", userRouter);
