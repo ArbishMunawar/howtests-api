@@ -1,11 +1,12 @@
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const articleSchema = new mongoose.Schema(
   {
     title: String,
     author: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "author",
+      ref: "Author",
     },
     slug: {
       type: String,
@@ -15,12 +16,7 @@ const articleSchema = new mongoose.Schema(
     },
     abstract: String,
     content: {
-      type: {
-        type: String,
-        enum: ["paragraph", "image", "video", "list"],
-        required: true,
-      },
-      data: mongoose.Schema.Types.Mixed,
+      type: String,
     },
     tableOfContents: [
       {
@@ -38,7 +34,7 @@ const articleSchema = new mongoose.Schema(
     category: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "category",
+        ref: "Category",
         required: true,
       },
     ],
@@ -56,4 +52,4 @@ const articleSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("articles", articleSchema);
+export default mongoose.model("Article", articleSchema);

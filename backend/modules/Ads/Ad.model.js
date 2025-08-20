@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const advertiseCardAdSchema = new mongoose.Schema(
   {
-    imageUrl: {
+    image: {
       type: String,
     },
     heading: {

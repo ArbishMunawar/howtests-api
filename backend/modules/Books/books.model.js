@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
+import mongoose from 'mongoose'
 
 const booksSchema = new mongoose.Schema(
   {
@@ -6,13 +7,13 @@ const booksSchema = new mongoose.Schema(
     image: String,
     author: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "author",
+      ref: "Author",
     },
     category: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "category",
-        required: true,
+        ref: "Category",
+        // required: true,
       },
     ],
     slug: {
@@ -21,12 +22,10 @@ const booksSchema = new mongoose.Schema(
       unique: true,
       index: true,
     },
-    tags: [
-      {
-        type: String,
-        required: true,
-      },
-    ],
+    tags: {
+      type: [String],
+      required: true,
+    },
     views: {
       type: Number,
       default: 0,
@@ -42,20 +41,17 @@ const booksSchema = new mongoose.Schema(
     summary: String,
 
     keyfeatures: {
-      type: { String },
-      default: [],
+      type: String,
     },
     whyChooseThisBook: {
-      type: { String },
-      default: [],
+      type: String,
     },
     subjectcovering: {
-      type: { String },
-      default: [],
+      type: String,
     },
   },
 
   { timestamps: true }
 );
 
-module.exports = mongoose.model("books", booksSchema);
+export default mongoose.model("Book", booksSchema);

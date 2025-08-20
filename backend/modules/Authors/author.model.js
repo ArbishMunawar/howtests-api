@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
+import mongoose from 'mongoose'
 
 const authorSchema = new mongoose.Schema(
   {
@@ -8,7 +9,7 @@ const authorSchema = new mongoose.Schema(
     },
     bio: {
       type: String,
-      required: true,
+      
     },
     about: {
       type: String,
@@ -24,26 +25,6 @@ const authorSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    articlespublished: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "articles",
-      },
-    ],
-    bookspublished: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "books",
-      },
-    ],
-    monthlyreaders: {
-      type: Number,
-      default: 0,
-    },
-    alltimereaders: {
-      type: Number,
-      default: 0,
-    },
     credentials: {
       qualification: String,
       degree: String,
@@ -56,10 +37,10 @@ const authorSchema = new mongoose.Schema(
     image: {
       type: String,
     },
-    isVerified: { type: Boolean, dafault: true },
+    isVerified: { type: Boolean, default: true },
   },
   { timestamps: true }
 );
 
-const authorModel = mongoose.model("author", authorSchema);
-module.exports = authorModel;
+const authorModel = mongoose.model("Author", authorSchema);
+ export default authorModel;
