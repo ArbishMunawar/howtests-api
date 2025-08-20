@@ -1,90 +1,58 @@
 import userModel from "./user.model.js";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import { ApiError } from "../../utils/ApiError.utils.js";
+// import { ApiResponse } from "../../utils/ApiResponse.utils.js";
+import { asyncHandler } from "../../utils/asyncHandler.utils.js";
+import sendToken from "../../utils/SendToken.utils.js";
 
-// creates jwt token here
-const sendToken = (user, res) => {
-  const token = jwt.sign(
-    {
-      id: user._id,
-      role: user.role,
-      email: user.email,
-    },
-    process.env.JWT_SECRET_KEY,
-    { expiresIn: "7d" }
-  );
 
-  // send cookies
-  res.cookie("token", token, {
-    httpOnly: true,
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-  });
-  res.json({ message: "Success",token, user });
-};
 
 // Register user
-const registerUser = async (req, res) => {
-  try {
-    const { username, email, password, name } = req.body;
-    const existingUser = await userModel.findOne({ email });
-    if (existingUser) {
-      return res
-        .status(400)
-        .json({ status: true, message: "Email already registered" });
-    }
+const registerUser = asyncHandler(async (req, res) => {
+  const { username, email, password, name } = req.body;
 
-    // hashing the passwoed
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    const userData = {
-      name,
-      username,
-      email,
-      password: hashedPassword,
-    };
-
-    const newUser = new userModel(userData);
-    await newUser.save();
-
-    // creates the token and store in cookie
-    sendToken(newUser,res);
-  } catch (error) {
-    res.status(500).json({
-      status: false,
-      message: "Error registering user",
-      error: error.message,
-    });
+  if (!username || !email || !password || !name) {
+    throw new ApiError(400, "All fields are required");
   }
-};
+
+  const existingUser = await userModel.findOne({ email });
+  if (existingUser) {
+    throw new ApiError(400, "Email already registered");
+  }
+
+  // hashing the passwoed
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+
+  const userData = {
+    name,
+    username,
+    email,
+    password: hashedPassword,
+  };
+
+  const newUser = new userModel(userData);
+  await newUser.save();
+
+  // creates the token and store in cookie
+  sendToken(newUser, res);
+});
 
 // Login user
 
-const loginUser = async (req, res) => {
-  try {
-    const { email, password } = req.body;
+const loginUser = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
 
-    const user = await userModel.findOne({ email })
-    if (!user)
-      return res.status(400).json({
-        status: false,
-        message: "User not found",
-      });
-    const isMacth = await bcrypt.compare(password, user.password);
-    if (!isMacth)
-      return res.status(400).json({
-        status: false,
-        message: "Invalid credentials",
-      });
-
-    sendToken(user,res);
-  } catch (error) {
-    res.status(500).json({
-      status: false,
-      message: "Error in login",
-      error: error.message,
-    });
+  const user = await userModel.findOne({ email });
+  if (!user) {
+    throw new ApiError(400, "User not found");
   }
-};
+  const isMacth = await bcrypt.compare(password, user.password);
+  if (!isMacth) {
+    throw new ApiError(400, "Invalid Credentials");
+  }
+
+  sendToken(user, res);
+});
 
 export { loginUser, registerUser };

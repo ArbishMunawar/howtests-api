@@ -1,27 +1,32 @@
 import authorModel from "./author.model.js";
+import { ApiError } from "../../utils/ApiError.utils.js";
+import { ApiResponse } from "../../utils/ApiResponse.utils.js";
+import { asyncHandler } from "../../utils/asyncHandler.utils.js";
+
 
 // Create Author
-const createAuthor = async (req, res) => {
-  try {
-    const author = await authorModel.create(req.body);
+const createAuthor = asyncHandler(async (req, res) => {
+  const author = await authorModel.create(req.body);
 
-    res.status(201).json({ message: "Author created successfully", author });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error creating author", error: error.message });
-  }
-};
+  res.status(201).json(new ApiResponse(201, author,"Author created successfully"));
+});
+
+
 // get all authors
-const getAllAuthors = async (req, res) => {
-  try {
-    const authors = await authorModel.find();
-    res.status(200).json(authors);
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error fetching authors", error: error.message });
-  }
-};
+const getAllAuthors = asyncHandler(async (req, res) => {
+  const authors = await authorModel.find();
+  res
+    .status(200)
+    .json(new ApiResponse(200,authors, "Authors fetched successfully"));
+});
 
-export { createAuthor, getAllAuthors };
+
+// get by id
+const getAuthorById = asyncHandler(async (req, res) => {
+  const author = await authorModel.findById(req.params.id);
+  if (!author) {
+    throw new ApiError(404, "Author not found");
+  }
+  res.status(200).json(new ApiResponse(200,author, "Author fetched successfully"));
+});
+export { createAuthor, getAllAuthors, getAuthorById };
