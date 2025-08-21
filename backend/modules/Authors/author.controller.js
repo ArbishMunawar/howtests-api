@@ -2,24 +2,33 @@ import authorModel from "./author.model.js";
 import { ApiError } from "../../utils/ApiError.utils.js";
 import { ApiResponse } from "../../utils/ApiResponse.utils.js";
 import { asyncHandler } from "../../utils/asyncHandler.utils.js";
-
+import generateUniqueSlug from "../../utils/GenerateSlug.utils.js";
 
 // Create Author
 const createAuthor = asyncHandler(async (req, res) => {
-  const author = await authorModel.create(req.body);
+  const { name } = req.body;
+  if (!name) {
+    throw new ApiError(400, "Author name is required");
+  }
+  const slug = await generateUniqueSlug(name, authorModel);
 
-  res.status(201).json(new ApiResponse(201, author,"Author created successfully"));
+  const author = await authorModel.create({
+    ...req.body,
+    slug,
+  });
+
+  res
+    .status(201)
+    .json(new ApiResponse(201, author, "Author created successfully"));
 });
-
 
 // get all authors
 const getAllAuthors = asyncHandler(async (req, res) => {
   const authors = await authorModel.find();
   res
     .status(200)
-    .json(new ApiResponse(200,authors, "Authors fetched successfully"));
+    .json(new ApiResponse(200, authors, "Authors fetched successfully"));
 });
-
 
 // get by id
 const getAuthorById = asyncHandler(async (req, res) => {
@@ -27,6 +36,8 @@ const getAuthorById = asyncHandler(async (req, res) => {
   if (!author) {
     throw new ApiError(404, "Author not found");
   }
-  res.status(200).json(new ApiResponse(200,author, "Author fetched successfully"));
+  res
+    .status(200)
+    .json(new ApiResponse(200, author, "Author fetched successfully"));
 });
 export { createAuthor, getAllAuthors, getAuthorById };
