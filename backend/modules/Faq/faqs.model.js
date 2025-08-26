@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const faqSchema = new mongoose.Schema(
   {
@@ -12,7 +12,6 @@ const faqSchema = new mongoose.Schema(
     },
     slug: {
       type: String,
-      required: true,
       unique: true,
       index: true,
     },
@@ -20,5 +19,5 @@ const faqSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const FaqSchema = mongoose.model("faqSchema", faqSchema);
-module.exports = FaqSchema;
+const FaqSchema = mongoose.model("Faq", faqSchema);
+export default FaqSchema;

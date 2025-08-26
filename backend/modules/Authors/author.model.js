@@ -36,6 +36,7 @@ const authorSchema = new mongoose.Schema(
 
     image: {
       type: String,
+       default: "/images/userDeafult.png" 
     },
     isVerified: { type: Boolean, default: true },
   },

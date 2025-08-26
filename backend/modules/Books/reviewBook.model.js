@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const bookReviewSchema = new mongoose.Schema({
   article: {
@@ -23,4 +23,4 @@ const bookReviewSchema = new mongoose.Schema({
 });
 
 const BookReview = mongoose.model("BookReview", bookReviewSchema);
-module.exports = BookReview;
+export default BookReview;

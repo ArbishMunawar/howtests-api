@@ -18,7 +18,7 @@ const createBook = asyncHandler(async (req, res) => {
 
 //get all books
 const getAllBooks = asyncHandler(async (req, res) => {
-  const books = await bookModel.find();
+  const books = await bookModel.find().populate('author', 'name').exec();
   res.status(200).json(new ApiResponse(200, books, "Found All Books"));
 });
 

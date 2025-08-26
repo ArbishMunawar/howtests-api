@@ -54,4 +54,7 @@ const loginUser = asyncHandler(async (req, res) => {
   sendToken(user, res);
 });
 
+
+
+
 export { loginUser, registerUser };
