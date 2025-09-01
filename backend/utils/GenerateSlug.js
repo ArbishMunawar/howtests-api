@@ -4,7 +4,7 @@ const generateUniqueSlug = async (name, model) => {
   //name will be slug
   let slug = slugify(name, { lower: true });
 
-  //finds slug in exisiting authors
+  //finds slug in existing authors
   let existingAuthor = await model.findOne({ slug });
   let counter = 1;
   // if slug already exists it will add the  counter in the end like "-1"

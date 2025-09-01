@@ -4,8 +4,6 @@ import { ApiError } from "../../utils/ApiError.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import sendToken from "../../utils/SendToken.js";
 
-
-
 // Register user
 const registerUser = asyncHandler(async (req, res) => {
   const { username, email, password, name,role } = req.body;
