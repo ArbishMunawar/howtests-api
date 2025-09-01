@@ -13,9 +13,13 @@ const articleSchema = new mongoose.Schema(
       unique: true,
       index: true,
     },
-    abstract: String,
+    abstract:  {
+      type: String,
+       required: true,
+    },
     content: {
       type: String,
+       required: true,
     },
     tableOfContents: [
       {
@@ -45,6 +49,10 @@ const articleSchema = new mongoose.Schema(
     shared: {
       type: Number,
       default: 0,
+    },
+      isActive: {
+      type: Boolean,
+      default: true, 
     },
     reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "review" }],
   },

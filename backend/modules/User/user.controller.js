@@ -1,14 +1,14 @@
 import userModel from "./user.model.js";
 import bcrypt from "bcryptjs";
-import { ApiError } from "../../utils/ApiError.utils.js";
-import { asyncHandler } from "../../utils/asyncHandler.utils.js";
-import sendToken from "../../utils/SendToken.utils.js";
+import { ApiError } from "../../utils/ApiError.js";
+import { asyncHandler } from "../../utils/asyncHandler.js";
+import sendToken from "../../utils/SendToken.js";
 
 
 
 // Register user
 const registerUser = asyncHandler(async (req, res) => {
-  const { username, email, password, name } = req.body;
+  const { username, email, password, name,role } = req.body;
 
   if (!username || !email || !password || !name) {
     throw new ApiError(400, "All fields are required");
@@ -28,6 +28,7 @@ const registerUser = asyncHandler(async (req, res) => {
     username,
     email,
     password: hashedPassword,
+    role: role || "user" 
   };
 
   const newUser = new userModel(userData);

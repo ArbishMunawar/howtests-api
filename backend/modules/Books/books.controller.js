@@ -1,7 +1,7 @@
 import bookModel from "./books.model.js";
-import { ApiResponse } from "../../utils/ApiResponse.utils.js";
-import { asyncHandler } from "../../utils/asyncHandler.utils.js";
-import generateUniqueSlug from "../../utils/GenerateSlug.utils.js";
+import { ApiResponse } from "../../utils/ApiResponse.js";
+import { asyncHandler } from "../../utils/asyncHandler.js";
+import generateUniqueSlug from "../../utils/GenerateSlug.js";
 
 // Create Book
 const createBook = asyncHandler(async (req, res) => {

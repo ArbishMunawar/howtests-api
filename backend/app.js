@@ -11,8 +11,9 @@ import faqRoutes from "./modules/Faq/faqs.route.js";
 import connectDB from "./config/mongodb.js";
 import connectCloudinary from "./config/cloudinary.js";
 import adminRoutes from "./modules/Admin/admin.route.js";
+import categoryRoutes from "./modules/Categories/category.route.js";
+dotenv.config({ path: ['.env.local', '.env'] });
 
-dotenv.config();
 const app = express();
 const PORT = 8000;
 
@@ -21,10 +22,12 @@ connectDB();
 connectCloudinary();
 
 //middlewares
-app.use(cors({
-  origin: "http://localhost:5173", 
-  credentials: true,               
-}));
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static("public"));
@@ -38,6 +41,7 @@ app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/author", authorRoutes);
 app.use("/api/v1/article", articleRoutes);
+app.use("/api/v1/category", categoryRoutes);
 
 app.get("/", (req, res) => {
   console.log("Hello from server");

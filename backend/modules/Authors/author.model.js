@@ -1,15 +1,15 @@
 // const mongoose = require("mongoose");
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
 const authorSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: true,
+      minlength: 2,
     },
     bio: {
       type: String,
-      
     },
     about: {
       type: String,
@@ -17,7 +17,7 @@ const authorSchema = new mongoose.Schema(
     },
     slug: {
       type: String,
-   
+required: true,
       unique: true,
       index: true,
     },
@@ -36,12 +36,13 @@ const authorSchema = new mongoose.Schema(
 
     image: {
       type: String,
-       default: "/images/userDeafult.png" 
+      default: "/images/userDeafult.png",
     },
+    isActive: { type: Boolean, default: true },
     isVerified: { type: Boolean, default: true },
   },
   { timestamps: true }
 );
 
 const authorModel = mongoose.model("Author", authorSchema);
- export default authorModel;
+export default authorModel;

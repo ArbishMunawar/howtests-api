@@ -1,8 +1,8 @@
 import FaqModel from "./faqs.model.js";
-import { ApiError } from "../../utils/ApiError.utils.js";
-import { ApiResponse } from "../../utils/ApiResponse.utils.js";
-import { asyncHandler } from "../../utils/asyncHandler.utils.js";
-import generateUniqueSlug from "../../utils/GenerateSlug.utils.js";
+import { ApiError } from "../../utils/ApiError.js";
+import { ApiResponse } from "../../utils/ApiResponse.js";
+import { asyncHandler } from "../../utils/asyncHandler.js";
+import generateUniqueSlug from "../../utils/GenerateSlug.js";
 
 // Create FAQ
 const createFaq = asyncHandler(async (req, res) => {

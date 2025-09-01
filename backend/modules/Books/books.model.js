@@ -1,5 +1,5 @@
 // const mongoose = require("mongoose");
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
 const booksSchema = new mongoose.Schema(
   {
@@ -18,7 +18,6 @@ const booksSchema = new mongoose.Schema(
     ],
     slug: {
       type: String,
-    
       unique: true,
       index: true,
     },
@@ -48,6 +47,10 @@ const booksSchema = new mongoose.Schema(
     },
     subjectcovering: {
       type: String,
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
     },
   },
 

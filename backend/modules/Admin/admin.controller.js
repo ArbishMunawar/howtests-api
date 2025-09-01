@@ -1,32 +1,69 @@
 import jwt from "jsonwebtoken";
+import articleModel from "../Articles/article.model.js";
+import CategoryModel from "../Categories/category.model.js";
+import booksModel from "../Books/books.model.js";
+import authorModel from "../Authors/author.model.js";
 
-const ADMIN_EMAIL = "admin@example.com";
-const ADMIN_PASSWORD = "admin123";
+import bcrypt from "bcryptjs";
+import User from "../User/user.model.js"; 
 
-// Generate JWT token
-const generateToken = () => {
-  return jwt.sign({ role: "admin" }, process.env.JWT_SECRET, { expiresIn: "1d" });
-};
-
-// Admin login
-export const adminLogin = (req, res) => {
+export const adminLogin = async (req, res) => {
   const { email, password } = req.body;
 
-  if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-    const token = generateToken();
-    // Set JWT token in httpOnly cookie
+  try {
+    const user = await User.findOne({ email });
+    if (!user || user.role !== "admin") {
+      return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ success: false, message: "Invalid credentials" });
+    }
+
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET_KEY,
+      { expiresIn: "1d" }
+    );
+
     res.cookie("adminToken", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
+      sameSite: "strict",
+      maxAge: 24 * 60 * 60 * 1000,
     });
-    return res.json({ success: true, token,message: "Admin logged in" });
-  } else {
-    return res.status(401).json({ success: false, message: "Invalid credentials" });
+
+    res.json({ success: true, message: "Admin logged in" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
-// Admin dashboard
-export const adminDashboard = (req, res) => {
-  return res.json({ success: true, message: "Welcome to admin dashboard" });
+
+//API to get dashboard data for admin
+
+const adminDashboard = async (req, res) => {
+  try {
+    const [articles, categories, books, authors] = await Promise.all([
+      articleModel.countDocuments(),
+      CategoryModel.countDocuments(),
+      booksModel.countDocuments(),
+      authorModel.countDocuments(),
+    ]);
+
+    const dashData = {
+      articles,
+      categories,
+      books,
+      authors,
+    };
+
+    res.json({ success: true, dashData });
+  } catch (error) {
+    console.error("Error fetching dashboard data:", error);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
 };
+export { adminDashboard };

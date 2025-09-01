@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { ApiResponse } from "./ApiResponse.utils.js"; 
+import { ApiResponse } from "./ApiResponse.js"; 
 
 // creates jwt token here
 const sendToken = (user, res) => {
