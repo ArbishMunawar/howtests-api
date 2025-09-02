@@ -3,30 +3,30 @@ import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import generateUniqueSlug from "../../utils/GenerateSlug.js";
-// import { v2 as cloudinary } from "cloudinary";
+import { v2 as cloudinary } from "cloudinary";
 
-// cloudinary.config({
-//   cloud_name: process.env.CLOUDINARY_NAME,
-//   api_key: process.env.CLOUDINARY_API_KEY,
-//   api_secret: process.env.CLOUDINARY_SECRET_KEY,
-// });
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET_KEY,
+});
 
 // Create Author
 const createAuthor = asyncHandler(async (req, res) => {
   const { name, bio, about, profession, credentials, isActive, isVerified } =
     req.body;
-  // const imageFile = req.file;
+  const imageFile = req.file;
   if (!name) {
     throw new ApiError(400, "Author name is required");
   }
-  // if (!imageFile) {
-  //   throw new ApiError(400, "Category image is required");
-  // }
+  if (!imageFile) {
+    throw new ApiError(400, "Category image is required");
+  }
   const slug = await generateUniqueSlug(name, authorModel);
-  // const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
-  //   resource_type: "image",
-  //   folder: "categories",
-  // });
+  const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
+    resource_type: "image",
+    folder: "categories",
+  });
 
   const author = await authorModel.create({
     bio,
@@ -36,7 +36,7 @@ const createAuthor = asyncHandler(async (req, res) => {
     isActive,
     isVerified,
     slug,
-    // image: imageUpload.secure_url,
+    image: imageUpload.secure_url,
   });
 
   res
